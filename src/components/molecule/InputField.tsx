@@ -39,15 +39,15 @@ const InputField = ({
         <label
           className={twMerge(clsx(
             `
-            bg-background text-foreground/80 text-base text-start px-2 ml-3
+            bg-background text-base text-start px-2 ml-3
             absolute left-0 top-0 -translate-y-1/2
             transition-all duration-100 ease-in
             pointer-events-none outline-none ring-0
 
             peer-focus:top-0 peer-focus:px-2 
-            peer-focus:w-fit  
+            peer-focus:w-fit peer-focus:text-black
 
-            peer-placeholder-shown:top-1/2 
+            peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-strong
             peer-disabled:bg-transparent
             `,
             error && "text-red-500"
@@ -60,7 +60,7 @@ const InputField = ({
           <span className="absolute right-4 top-1/2 -translate-y-1/2 bg-background flex items-center justify-center">
             <Button
               type="button"
-              className={error ? "text-red-500" : "text-foreground/80"}
+              className={error ? "text-red-500" : "text-strong"}
               onClick={() => setShowPassword(prev => !prev)}
               size="icon"
               variant="ghost"
