@@ -23,11 +23,12 @@ const FloatingFormInput = ({
 
   return (
     <div className="text-end w-full space-y-1">
-
       <div className="relative">
         <Input
           variant={error ? "error" : "default"}
-          type={type === "password" ? showPassword ? "text" : "password" : type}
+          type={
+            type === "password" ? (showPassword ? "text" : "password") : type
+          }
           placeholder=" "
           className={className}
           id={title}
@@ -35,21 +36,24 @@ const FloatingFormInput = ({
         />
 
         <label
-          className={twMerge(clsx(
-            `
-            bg-background text-foreground text-start px-2 ml-3
+          className={twMerge(
+            clsx(
+              `
+            bg-background text-base text-start px-2 ml-3
             absolute left-0 top-0 -translate-y-1/2
             transition-all duration-100 ease-in
             outline-none ring-0
 
             peer-focus:top-0 peer-focus:px-2 
-            peer-focus:w-fit peer-focus:text-foreground
+            peer-focus:w-fit peer-focus:text-black
 
+            peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-strong
             peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-strong
             peer-disabled:bg-transparent
             `,
-            error && "text-red-500"
-          ))}
+              error && "text-red-500",
+            ),
+          )}
           htmlFor={title}
         >
           {title}
@@ -60,7 +64,7 @@ const FloatingFormInput = ({
             <Button
               type="button"
               className={error ? "text-red-500" : "text-strong"}
-              onClick={() => setShowPassword(prev => !prev)}
+              onClick={() => setShowPassword((prev) => !prev)}
               size="icon"
               variant="ghost"
             >
@@ -72,7 +76,7 @@ const FloatingFormInput = ({
 
       {error && <p className="text-red-500 text-sm text-start">{error}</p>}
     </div>
-  )
-}
+  );
+};
 
 export default FloatingFormInput;
