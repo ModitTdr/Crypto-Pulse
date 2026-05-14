@@ -4,10 +4,10 @@ import LoginSchema from "../schema/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router";
 import { signIn } from "../services/authService";
-import InputField from "@/components/molecule/InputField";
+import FloatingFormInput from "@/components/molecule/FloatingFormInput";
 
 const LoginPage = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
@@ -15,8 +15,8 @@ const LoginPage = () => {
     }
   });
 
-  const onSubmit = (data: { email: string, password: string }) => {
-    signIn(data)
+  const onSubmit = async (data: { email: string, password: string }) => {
+    await signIn(data)
   }
 
   return (
@@ -27,21 +27,26 @@ const LoginPage = () => {
       </div>
       <form className="text-center space-y-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-5">
-          <InputField
-            label="Email"
+          <FloatingFormInput
+            title="Email"
             type="email"
             {...register("email", { required: "Email required" })}
             error={errors.email?.message}
+            disabled={isSubmitting}
           />
-          <InputField
-            label="Password"
-            type="password"
-            {...register("password", { required: "Password required" })}
-            error={errors.password?.message}
-          />
+          <div className="space-y-2 text-end">
+            <FloatingFormInput
+              title="Password"
+              type="password"
+              {...register("password", { required: "Password required" })}
+              error={errors.password?.message}
+              disabled={isSubmitting}
+            />
+            <Link to="/forgot-password" className="text-sm text-foreground/80">Forgot Password?</Link>
+          </div>
         </div>
-        <Button variant="primary">
-          Sign In
+        <Button variant="primary" loading={isSubmitting} disabled={isSubmitting}>
+          {isSubmitting ? "Signing In..." : "Sign In"}
         </Button>
 
         <div className="text-foreground-muted">
