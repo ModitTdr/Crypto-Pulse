@@ -5,6 +5,7 @@ import DashboardLayout from "@/features/dashboard";
 import { createBrowserRouter } from "react-router";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./PrivateRoute";
+import Dashboard from "@/features/dashboard/pages/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,12 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <DashboardLayout />
       </ProtectedRoute>,
-    children: [],
+    children: [
+      {
+        index: true,
+        element: <Dashboard />
+      }
+    ],
   }
 ])
 
