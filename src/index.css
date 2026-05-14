@@ -2,20 +2,20 @@
 @import "tailwindcss";
 
 :root {
-  --foreground: #0a0a0a;
-  --foreground-muted: #737373;
-  --background: #ffffff;
-  
-  --border-subtle: #d4d4d4;
-  --border-strong: #737373;
+  --background: #0a0a0a;
+  --foreground: #e5e5e5;
+  --foreground-muted: #8a8a8a;
+
+  --border-subtle: #262626;
+  --border-strong: #404040;
 
   --primary: #9d3cf8;
   --success: #10b981;
   --warning: #ef4444;
+  --info: #3b82f6;
 
   --font-sora: "Sora", sans-serif;
-  --font-inter: "Inter", ui-sans-serif, system-ui;
-  
+  --font-inter: "Inter", ui-sans-serif, system-ui;  
 }
 
 @theme {
@@ -29,6 +29,7 @@
   --color-primary: var(--primary);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-info: var(--info);
 
   --font-sora: var(--font-sora);
   --font-inter: var(--font-inter);
@@ -37,5 +38,15 @@
 @layer base {
   body {
     font-family: var(--font-inter);
+    @apply bg-background text-foreground;
   }
+
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px var(--background) inset !important;
+    -webkit-text-fill-color:var(--foreground) !important;
 }
