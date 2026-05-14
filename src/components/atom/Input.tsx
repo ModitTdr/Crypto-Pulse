@@ -7,10 +7,10 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = ({ variant = 'default', className, ...props }: InputFieldProps) => {
-  const baseStyle = "h-14 px-4 w-full border border-subtle focus:border-strong rounded-sm peer outline-none ring-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-black/5"
+  const baseStyle = "h-14 px-4 w-full border rounded-sm peer outline-none ring-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-black/5"
 
   const variantStyle = {
-    default: "",
+    default: "border-subtle focus:border-strong",
     error: "border-red-500 focus:border-red-500 text-red-500",
   }
 
