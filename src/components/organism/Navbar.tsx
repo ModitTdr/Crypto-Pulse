@@ -1,18 +1,20 @@
-import { Activity, HomeIcon, LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { Activity, HomeIcon, LayoutDashboard, LogOut, X } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router"
 import { logOut } from "@/features/authentication/services/authService";
 import Button from "../atom/Button";
-import Select from "../atom/Select";
 import { useCurrency, type Currency } from "@/context/CurrencyContext";
+import { useState } from "react";
+import { Modal, ModalBody, ModalClose, ModalHeader, ModalTitle } from "../atom/Modal";
 
 const Navbar = () => {
+  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false);
   const { currency, changeCurrency } = useCurrency();
 
   const navigate = useNavigate();
   const navLinks = [
     { link: '/dashboard', label: 'Home', icon: HomeIcon },
-    { link: '/portfolio', label: 'Portfolio', icon: LayoutDashboard },
-    { link: '/settings', label: 'Settings', icon: Settings },
+    { link: '/dashboard/portfolio', label: 'Portfolio', icon: LayoutDashboard },
+    // { link: '/settings', label: 'Settings', icon: Settings },
   ];
 
   const handleLogout = async () => {
@@ -23,7 +25,7 @@ const Navbar = () => {
   return (
     <header className="w-full sticky top-0 z-50 bg-background/80 backdrop-blur-sm">
       <nav className="h-15 flex items-center justify-between px-10 border-b border-black/5">
-        <Link to="/" className="font-bold tracking-[0.2em] uppercase flex items-center gap-2 font-sora hover:text-primary transition-all duration-150">
+        <Link to="/dashboard" className="font-bold tracking-[0.2em] uppercase flex items-center gap-2 font-sora hover:text-primary transition-all duration-150">
           <Activity size={18} />
           Crypto<span className="opacity-30 -ml-2 font-sora">Pulse</span>
         </Link>
@@ -57,15 +59,44 @@ const Navbar = () => {
               Logout
             </Button>
 
-            <Select
-              options={[
-                { value: 'usd', label: 'USD' },
-                { value: 'eur', label: 'EUR' },
-                { value: 'btc', label: 'BTC' },
-              ]}
-              onChange={(e) => changeCurrency(e.target.value as Currency)}
-              value={currency}
-            />
+            <Button variant="outline" size="icon" className="px-6 py-3" onClick={() => setIsCurrencyOpen(!isCurrencyOpen)}>
+              {currency}
+            </Button>
+
+            {isCurrencyOpen &&
+              (
+                <Modal className="max-w-xs border-black/10 bg-background">
+                  <ModalHeader className="mb-0 border-none pb-0">
+                    <ModalTitle className="text-lg font-semibold">Select Currency</ModalTitle>
+
+                    <ModalClose
+                      onClose={() => setIsCurrencyOpen(false)}
+                      className="opacity-50 hover:opacity-100"
+                    >
+                      <X />
+                    </ModalClose>
+                  </ModalHeader>
+
+                  <ModalBody className="pt-4">
+                    <div className="flex flex-col gap-2">
+                      {(["usd", "eur", "btc"] as Currency[]).map((item) => (
+                        <Button
+                          key={item}
+                          variant={currency === item ? "default" : "ghost"}
+                          className="justify-start uppercase"
+                          onClick={() => {
+                            changeCurrency(item);
+                            setIsCurrencyOpen(false);
+                          }}
+                        >
+                          {item}
+                        </Button>
+                      ))}
+                    </div>
+                  </ModalBody>
+                </Modal>
+              )}
+
           </div>
         </div>
       </nav>
