@@ -6,6 +6,7 @@ import { createBrowserRouter } from "react-router";
 import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./PrivateRoute";
 import Dashboard from "@/features/dashboard/pages/Dashboard";
+import Portfolio from "@/features/dashboard/pages/Portfolio";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Dashboard />
+      },
+      {
+        path: "portfolio",
+        element: <Portfolio />
       }
     ],
   }
