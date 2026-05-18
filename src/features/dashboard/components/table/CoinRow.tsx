@@ -2,6 +2,7 @@ import { TableCell, TableRow } from "@/components/atom/Table"
 import CoinData from "./CoinData"
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol"
 import type { CoinResponseType } from "../../types/coinResponseType";
+import { memo } from "react";
 
 interface CoinRowProps {
   data: CoinResponseType
@@ -48,4 +49,4 @@ const CoinRow = ({ data, index, currency }: CoinRowProps) => {
   )
 }
 
-export default CoinRow
+export default memo(CoinRow)

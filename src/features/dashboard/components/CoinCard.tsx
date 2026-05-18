@@ -10,7 +10,6 @@ interface CoinCardProps {
   currencyType: string;
 }
 const CoinCard = ({ data, index, currencyType }: CoinCardProps) => {
-  console.log('coin card rendered', data.name)
   return (
     <Card className=' w-[440px] h-[240px]'>
       <div className="absolute -right-10 -bottom-10 w-60 opacity-10 grayscale group-hover:grayscale-0 group-hover:opacity-50 transition-all duration-700 rotate-12 group-hover:rotate-0">
