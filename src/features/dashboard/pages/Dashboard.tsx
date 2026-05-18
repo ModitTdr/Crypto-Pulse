@@ -6,8 +6,7 @@ import CoinCard from "../components/CoinCard";
 
 const Dashboard = () => {
   const { data, isLoading, currency } = useCoinQuery();
-  const topData = data?.slice(0, 3);
-
+  const topData = data?.slice(0, 3)
   return (
     <section className="space-y-10 overflow-hidden">
       <div className="relative text-center">
@@ -17,21 +16,23 @@ const Dashboard = () => {
             text-[17vw] font-semibold font-sora
             bg-linear-to-b from-foreground from-25% via-foreground/5 via-60% to-background
             bg-clip-text bg-transparent text-transparent
-            absolute top-0 left-1/2 -translate-x-1/2 -translate-y-20
+            absolute top-0 left-1/2 -translate-x-1/2 lg:-translate-y-20
           "
         >
           Dashboard
         </h1>
-        <div className="flex justify-evenly items-center gap-4 pt-35">
+        <div className="flex justify-evenly items-center gap-4 pt-35 flex-wrap">
           {topData &&
-            topData.map((coin, index) => (
-              <CoinCard
-                key={index}
-                data={coin}
-                index={index}
-                currencyType={currency}
-              />
-            ))
+            topData.map((coin, index) => {
+              return (
+                <CoinCard
+                  key={coin.id}
+                  data={coin}
+                  index={index}
+                  currencyType={currency}
+                />
+              )
+            })
           }
         </div>
       </div>
@@ -52,7 +53,7 @@ const Dashboard = () => {
               data.map((coin: CoinResponseType, index: number) => {
                 return (
                   <CoinRow
-                    key={index}
+                    key={coin.id}
                     data={coin}
                     index={index}
                     currency={currency}
@@ -60,7 +61,7 @@ const Dashboard = () => {
                 )
               })
             ) : (
-              <TableEmptyState colSpan={3} isLoading={isLoading} />
+              <TableEmptyState colSpan={5} isLoading={isLoading} />
             )}
           </TableBody>
         </Table>
