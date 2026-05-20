@@ -11,6 +11,7 @@ import CoinData from '../table/CoinData'
 import { Modal, ModalBody, ModalClose, ModalFooter, ModalHeader, ModalTitle } from '@/components/atom/Modal'
 import Loader from '@/components/atom/Loader'
 import { useSearchCoin } from '../../hooks/useCoinQueries'
+import { sanitizeInputDecimal } from '@/utils/sanitizeInputs'
 
 interface AddCoinModalProps {
   onClose: () => void;
@@ -147,10 +148,10 @@ export const AddCoinModal = ({ onClose }: AddCoinModalProps) => {
 
               <Input
                 id="amount"
-                type="number"
+                type="string"
                 placeholder="0.00"
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e) => { setAmount(sanitizeInputDecimal(e.target.value)) }}
                 autoFocus
               />
             </div>

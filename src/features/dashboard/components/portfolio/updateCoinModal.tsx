@@ -16,6 +16,7 @@ import { X } from "lucide-react";
 import CoinData from "../table/CoinData";
 import type { PortfolioItem } from "../../types/coinPortfolio";
 import { updatePortfolioCoin } from "../../services/portfolioService";
+import { sanitizeInputDecimal } from "@/utils/sanitizeInputs";
 
 interface Props {
   coin: PortfolioItem;
@@ -34,7 +35,6 @@ const UpdateCoinModal = ({ coin, onClose }: Props) => {
       toast.error("Enter valid amount");
       return;
     }
-
     try {
       setLoading(true);
       await updatePortfolioCoin(coin.coinId, parsedAmount);
@@ -44,6 +44,7 @@ const UpdateCoinModal = ({ coin, onClose }: Props) => {
       });
       onClose();
     } catch (error) {
+      console.error(error)
       toast.error("Failed to update");
     } finally {
       setLoading(false);
@@ -69,9 +70,9 @@ const UpdateCoinModal = ({ coin, onClose }: Props) => {
             />
           </div>
           <Input
-            type="number"
+            type="string"
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => { setAmount(sanitizeInputDecimal(e.target.value)) }}
           />
         </div>
       </ModalBody>
