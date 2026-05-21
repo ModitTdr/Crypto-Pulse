@@ -1,8 +1,8 @@
-import type { CoinResponseType } from '../types/coinResponseType';
 import { getCurrencySymbol } from '@/utils/getCurrencySymbol';
 import Badge from '@/components/atom/Badge';
+
 import { Card } from '@/components/atom/Card';
-import { memo } from 'react';
+import type { CoinResponseType } from '../types/coinResponseType';
 
 interface CoinCardProps {
   data: CoinResponseType;
@@ -45,4 +45,4 @@ const CoinCard = ({ data, index, currencyType }: CoinCardProps) => {
   )
 }
 
-export default memo(CoinCard)
+export default CoinCard

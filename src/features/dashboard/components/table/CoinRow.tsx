@@ -1,17 +1,17 @@
 import { TableCell, TableRow } from "@/components/atom/Table"
 import CoinData from "./CoinData"
-import { getCurrencySymbol } from "@/utils/getCurrencySymbol"
 import type { CoinResponseType } from "../../types/coinResponseType";
-import { memo } from "react";
+import { getCurrencySymbol } from "@/utils/getCurrencySymbol"
 
 interface CoinRowProps {
-  data: CoinResponseType
+  data: CoinResponseType;
   index: number;
   currency: string;
 }
+
 const CoinRow = ({ data, index, currency }: CoinRowProps) => {
   return (
-    <TableRow key={index}>
+    <TableRow>
       <TableCell>
         {String(index + 1).padStart(3, '0')}
       </TableCell>
@@ -49,4 +49,4 @@ const CoinRow = ({ data, index, currency }: CoinRowProps) => {
   )
 }
 
-export default memo(CoinRow)
+export default CoinRow;
