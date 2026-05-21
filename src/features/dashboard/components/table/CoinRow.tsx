@@ -1,15 +1,18 @@
 import { TableCell, TableRow } from "@/components/atom/Table"
 import CoinData from "./CoinData"
-import type { CoinResponseType } from "../../types/coinResponseType";
+// import type { CoinResponseType } from "../../types/coinResponseType";
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol"
+import { useCoinStore } from "@/store/coinStore";
 
 interface CoinRowProps {
-  data: CoinResponseType;
+  // data: CoinResponseType,
+  coinId: string,
   index: number;
   currency: string;
 }
 
-const CoinRow = ({ data, index, currency }: CoinRowProps) => {
+const CoinRow = ({ coinId, index, currency }: CoinRowProps) => {
+  const data = useCoinStore(state => state.coinsObj[coinId]);
   return (
     <TableRow>
       <TableCell>

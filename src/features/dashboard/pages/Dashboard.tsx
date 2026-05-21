@@ -1,12 +1,15 @@
 import { useCoinQuery } from "../hooks/useCoinQueries"
 import { Table, TableBody, TableEmptyState, TableHead, TableHeader, TableRow } from "@/components/atom/Table";
 import CoinRow from "../components/table/CoinRow";
-import type { CoinResponseType } from "../types/coinResponseType";
 import CoinCard from "../components/CoinCard";
+import { useCoinStore } from "@/store/coinStore";
 
 const Dashboard = () => {
-  const { data, isLoading, currency } = useCoinQuery();
-  const topData = data?.slice(0, 3)
+  const { isLoading, currency } = useCoinQuery();
+  // const data = useCoinStore(state => state.coins);
+  const data = useCoinStore(state => state.coinIds)
+  const topData = data?.slice(0, 3);
+
   return (
     <section className="space-y-10 overflow-hidden">
       <div className="relative text-center">
@@ -23,11 +26,12 @@ const Dashboard = () => {
         </h1>
         <div className="flex justify-evenly items-center gap-4 pt-35 flex-wrap">
           {topData &&
-            topData.map((coin, index) => {
+            topData.map((coinId: string, index) => {
               return (
                 <CoinCard
-                  key={coin.id}
-                  data={coin}
+                  key={coinId}
+                  // data={data}
+                  coinId={coinId}
                   index={index}
                   currencyType={currency}
                 />
@@ -50,11 +54,12 @@ const Dashboard = () => {
           </TableHeader>
           <TableBody>
             {data ? (
-              data.map((coin: CoinResponseType, index: number) => {
+              data.map((coinId: string, index: number) => {
                 return (
                   <CoinRow
-                    key={coin.id}
-                    data={coin}
+                    key={coinId}
+                    // data={data}
+                    coinId={coinId}
                     index={index}
                     currency={currency}
                   />
