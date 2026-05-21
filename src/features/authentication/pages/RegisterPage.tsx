@@ -16,8 +16,8 @@ const RegisterPage = () => {
     }
   });
 
-  const onSubmit = (data: { email: string, password: string, confirmPassword: string }) => {
-    signUp(data)
+  const onSubmit = async (data: { email: string, password: string, confirmPassword: string }) => {
+    await signUp(data)
   }
 
   return (
