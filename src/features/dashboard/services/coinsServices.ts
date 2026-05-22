@@ -1,7 +1,7 @@
 import { api } from "@/lib/axios";
 
-export const getCoinsList = async (currency: string) => {
-  const res = await api.get(`coins/markets?vs_currency=${currency}&per_page=50`);
+export const getCoinsList = async (page: number, currency: string) => {
+  const res = await api.get(`coins/markets?vs_currency=${currency}&page=${page}&per_page=50`);
   return res.data;
 }
 

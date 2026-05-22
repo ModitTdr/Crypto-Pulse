@@ -3,12 +3,32 @@ import { Table, TableBody, TableEmptyState, TableHead, TableHeader, TableRow } f
 import CoinRow from "../components/table/CoinRow";
 import CoinCard from "../components/CoinCard";
 import { useCoinStore } from "@/store/coinStore";
+import { useEffect, useRef } from "react";
 
 const Dashboard = () => {
-  const { isLoading, currency } = useCoinQuery();
+  const { isLoading, currency, fetchNextPage } = useCoinQuery();
   // const data = useCoinStore(state => state.coins);
   const data = useCoinStore(state => state.coinIds)
   const topData = data?.slice(0, 3);
+
+  const tableBodyRef = useRef<HTMLTableSectionElement | null>(null);
+  const isFetchingRef = useRef(false);
+
+  function handleScroll() {
+    if (!tableBodyRef.current) return;
+    const table = tableBodyRef.current.getBoundingClientRect();
+    const scrollPosition = table.bottom - window.innerHeight;
+
+    if (scrollPosition < 300 && !isFetchingRef.current) {
+      isFetchingRef.current = true;
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [])
 
   return (
     <section className="space-y-10 overflow-hidden">
@@ -52,7 +72,7 @@ const Dashboard = () => {
               <TableHead className="text-right">Market Change (24h)</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody ref={tableBodyRef}>
             {data ? (
               data.map((coinId: string, index: number) => {
                 return (

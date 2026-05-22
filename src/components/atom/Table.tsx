@@ -54,16 +54,18 @@ export const TableHeader = ({
 
 interface TableBodyProps
   extends React.HTMLAttributes<HTMLTableSectionElement> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
-export const TableBody = ({
-  children,
-  className,
-  ...props
-}: TableBodyProps) => {
-  const baseStyle = "divide-y divide-subtle/50"
+
+export const TableBody = React.forwardRef<
+  HTMLTableSectionElement,
+  TableBodyProps
+>(({ children, className, ...props }, ref) => {
+  const baseStyle = "divide-y divide-subtle/50";
+
   return (
     <tbody
+      ref={ref}
       className={twMerge(
         clsx(
           baseStyle,
@@ -74,19 +76,22 @@ export const TableBody = ({
     >
       {children}
     </tbody>
-  )
-}
+  );
+});
 
 interface TableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
+
 export const TableRow = ({
   children,
   className,
   ...props
 }: TableRowProps) => {
-  const baseStyle = "group transition-all duration-300 hover:bg-subtle/60"
+  const baseStyle =
+    "group transition-all duration-300 hover:bg-subtle/60";
+
   return (
     <tr
       className={twMerge(
@@ -99,8 +104,8 @@ export const TableRow = ({
     >
       {children}
     </tr>
-  )
-}
+  );
+};
 
 interface TableHeadProps
   extends React.ThHTMLAttributes<HTMLTableCellElement> {
