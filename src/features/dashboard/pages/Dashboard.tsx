@@ -6,29 +6,27 @@ import { useCoinStore } from "@/store/coinStore";
 import { useEffect, useRef } from "react";
 
 const Dashboard = () => {
-  const { isLoading, currency, fetchNextPage } = useCoinQuery();
+  const { isLoading, currency, fetchNextPage, hasNextPage, isFetchingNextPage } = useCoinQuery();
   // const data = useCoinStore(state => state.coins);
   const data = useCoinStore(state => state.coinIds)
   const topData = data?.slice(0, 3);
 
   const tableBodyRef = useRef<HTMLTableSectionElement | null>(null);
-  const isFetchingRef = useRef(false);
-
-  function handleScroll() {
-    if (!tableBodyRef.current) return;
-    const table = tableBodyRef.current.getBoundingClientRect();
-    const scrollPosition = table.bottom - window.innerHeight;
-
-    if (scrollPosition < 300 && !isFetchingRef.current) {
-      isFetchingRef.current = true;
-      fetchNextPage();
-    }
-  };
 
   useEffect(() => {
+    function handleScroll() {
+      if (!tableBodyRef.current) return;
+      const table = tableBodyRef.current.getBoundingClientRect();
+      const scrollPosition = table.bottom - window.innerHeight;
+
+      console.log('isFetchingNextPage', isFetchingNextPage);
+      if (scrollPosition < 300 && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [])
+  }, [isFetchingNextPage, hasNextPage, fetchNextPage])
 
   return (
     <section className="space-y-10 overflow-hidden">
