@@ -1,4 +1,4 @@
-import { TableCell, TableRow } from "@/components/atom/Table"
+import { TableCell } from "@/components/atom/Table"
 import CoinData from "./CoinData"
 // import type { CoinResponseType } from "../../types/coinResponseType";
 import { getCurrencySymbol } from "@/utils/getCurrencySymbol"
@@ -14,7 +14,7 @@ interface CoinRowProps {
 const CoinRow = ({ coinId, index, currency }: CoinRowProps) => {
   const data = useCoinStore(state => state.coinsObj[coinId]);
   return (
-    <TableRow>
+    <>
       <TableCell>
         {String(index + 1).padStart(3, '0')}
       </TableCell>
@@ -48,7 +48,7 @@ const CoinRow = ({ coinId, index, currency }: CoinRowProps) => {
           }
         </div>
       </TableCell>
-    </TableRow>
+    </>
   )
 }
 

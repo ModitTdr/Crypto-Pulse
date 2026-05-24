@@ -4,14 +4,14 @@ import { twMerge } from "tailwind-merge"
 
 interface TableProps
   extends React.TableHTMLAttributes<HTMLTableElement> {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 export const Table = ({
   children,
   className,
   ...props
 }: TableProps) => {
-  const baseStyle = "w-full border-collapse"
+  const baseStyle = "w-full border-collapse w-full table-fixed"
   return (
     <table
       className={twMerge(
@@ -29,14 +29,14 @@ export const Table = ({
 
 interface TableHeaderProps
   extends React.HTMLAttributes<HTMLTableSectionElement> {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 export const TableHeader = ({
   children,
   className,
   ...props
 }: TableHeaderProps) => {
-  const baseStyle = "border-b border-strong opacity-70"
+  const baseStyle = "border-b border-strong"
   return (
     <thead
       className={twMerge(
@@ -54,18 +54,19 @@ export const TableHeader = ({
 
 interface TableBodyProps
   extends React.HTMLAttributes<HTMLTableSectionElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   TableBodyProps
->(({ children, className, ...props }, ref) => {
+>(({ children, className, style, ...props }, ref) => {
   const baseStyle = "divide-y divide-subtle/50";
 
   return (
     <tbody
       ref={ref}
+      style={style}
       className={twMerge(
         clsx(
           baseStyle,
@@ -81,7 +82,7 @@ export const TableBody = React.forwardRef<
 
 interface TableRowProps
   extends React.HTMLAttributes<HTMLTableRowElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export const TableRow = ({
@@ -90,7 +91,7 @@ export const TableRow = ({
   ...props
 }: TableRowProps) => {
   const baseStyle =
-    "group transition-all duration-300 hover:bg-subtle/60";
+    "group transition-all duration-300 hover:bg-subtle";
 
   return (
     <tr
@@ -109,7 +110,7 @@ export const TableRow = ({
 
 interface TableHeadProps
   extends React.ThHTMLAttributes<HTMLTableCellElement> {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 export const TableHead = ({
   children,
@@ -134,7 +135,7 @@ export const TableHead = ({
 
 interface TableCellProps
   extends React.TdHTMLAttributes<HTMLTableCellElement> {
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 export const TableCell = ({
   children,

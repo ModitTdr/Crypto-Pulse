@@ -3,7 +3,8 @@ import { Table, TableBody, TableEmptyState, TableHead, TableHeader, TableRow } f
 import CoinRow from "../components/table/CoinRow";
 import CoinCard from "../components/CoinCard";
 import { useCoinStore } from "@/store/coinStore";
-import { useEffect, useRef } from "react";
+// import { useEffect, useRef } from "react";
+import { TableVirtuoso } from "react-virtuoso"
 
 const Dashboard = () => {
   const { isLoading, currency, fetchNextPage, hasNextPage, isFetchingNextPage } = useCoinQuery();
@@ -11,22 +12,22 @@ const Dashboard = () => {
   const data = useCoinStore(state => state.coinIds)
   const topData = data?.slice(0, 3);
 
-  const tableBodyRef = useRef<HTMLTableSectionElement | null>(null);
+  // --old--> used for scroll event based infinite scroll
+  // const tableBodyRef = useRef<HTMLTableSectionElement | null>(null);
+  // useEffect(() => {
+  //   function handleScroll() {
+  //     if (!tableBodyRef.current) return;
+  //     const table = tableBodyRef.current.getBoundingClientRect();
+  //     const scrollPosition = table.bottom - window.innerHeight;
 
-  useEffect(() => {
-    function handleScroll() {
-      if (!tableBodyRef.current) return;
-      const table = tableBodyRef.current.getBoundingClientRect();
-      const scrollPosition = table.bottom - window.innerHeight;
-
-      console.log('isFetchingNextPage', isFetchingNextPage);
-      if (scrollPosition < 300 && hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [isFetchingNextPage, hasNextPage, fetchNextPage])
+  //     console.log('isFetchingNextPage', isFetchingNextPage);
+  //     if (scrollPosition < 300 && hasNextPage && !isFetchingNextPage) {
+  //       fetchNextPage();
+  //     }
+  //   };
+  //   window.addEventListener('scroll', handleScroll);
+  //   return () => window.removeEventListener('scroll', handleScroll);
+  // }, [isFetchingNextPage, hasNextPage, fetchNextPage])
 
   return (
     <section className="space-y-10 overflow-hidden">
@@ -59,37 +60,42 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="w-full">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Index</TableHead>
+      <div className="w-full h-[720px]">
+        <TableVirtuoso
+          data={data}
+          endReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          components={{
+            Table,
+            TableHead: TableHeader,
+            TableBody,
+            TableRow,
+          }}
+          fixedHeaderContent={() => (
+            <TableRow className="bg-black">
+              <TableHead className="w-20">Index</TableHead>
               <TableHead>Coin</TableHead>
               <TableHead>Valuation</TableHead>
               <TableHead>Total Volume</TableHead>
-              <TableHead className="text-right">Market Change (24h)</TableHead>
+              <TableHead className="text-right">
+                Market Change (24h)
+              </TableHead>
             </TableRow>
-          </TableHeader>
-          <TableBody ref={tableBodyRef}>
-            {data ? (
-              data.map((coinId: string, index: number) => {
-                return (
-                  <CoinRow
-                    key={coinId}
-                    // data={data}
-                    coinId={coinId}
-                    index={index}
-                    currency={currency}
-                  />
-                )
-              })
-            ) : (
-              <TableEmptyState colSpan={5} isLoading={isLoading} />
-            )}
-          </TableBody>
-        </Table>
+          )}
+          itemContent={(index, coinId) => (
+            <CoinRow
+              coinId={coinId}
+              index={index}
+              currency={currency}
+            />
+          )}
+        />
       </div>
-    </section >
+
+    </section>
   )
 }
 
