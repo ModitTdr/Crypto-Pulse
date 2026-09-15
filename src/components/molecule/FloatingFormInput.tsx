@@ -1,59 +1,62 @@
 import { Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router";
 import Button from "../atom/Button";
 import { twMerge } from "tailwind-merge";
 import clsx from "clsx";
 import Input from "../atom/Input";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label: string;
+interface FloatingFormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  title: string;
   type?: string;
-  showForPassword?: boolean;
   className?: string;
   error?: string;
 }
 
-const InputField = ({
-  label,
+const FloatingFormInput = ({
+  title,
   type = "text",
-  showForPassword = type === "password" ? true : false,
   className,
   error,
   ...props
-}: InputProps) => {
+}: FloatingFormInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="text-end w-full space-y-1">
-
       <div className="relative">
         <Input
           variant={error ? "error" : "default"}
-          type={type === "password" ? showPassword ? "text" : "password" : type}
+          type={
+            type === "password" ? (showPassword ? "text" : "password") : type
+          }
           placeholder=" "
           className={className}
+          id={title}
           {...props}
         />
 
         <label
-          className={twMerge(clsx(
-            `
+          className={twMerge(
+            clsx(
+              `
             bg-background text-base text-start px-2 ml-3
             absolute left-0 top-0 -translate-y-1/2
             transition-all duration-100 ease-in
-            pointer-events-none outline-none ring-0
+            outline-none ring-0
 
             peer-focus:top-0 peer-focus:px-2 
             peer-focus:w-fit peer-focus:text-black
 
             peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-strong
+            peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-strong
             peer-disabled:bg-transparent
             `,
-            error && "text-red-500"
-          ))}
+              error && "text-red-500",
+            ),
+          )}
+          htmlFor={title}
         >
-          {label}
+          {title}
         </label>
 
         {type === "password" && (
@@ -61,7 +64,7 @@ const InputField = ({
             <Button
               type="button"
               className={error ? "text-red-500" : "text-strong"}
-              onClick={() => setShowPassword(prev => !prev)}
+              onClick={() => setShowPassword((prev) => !prev)}
               size="icon"
               variant="ghost"
             >
@@ -70,13 +73,10 @@ const InputField = ({
           </span>
         )}
       </div>
+
       {error && <p className="text-red-500 text-sm text-start">{error}</p>}
-
-      {(showForPassword && type === "password") &&
-        <Link to="/forgot-password" className="text-sm text-foreground/80">Forgot Password?</Link>
-      }
     </div>
-  )
-}
+  );
+};
 
-export default InputField;
+export default FloatingFormInput;
