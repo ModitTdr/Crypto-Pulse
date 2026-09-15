@@ -4,11 +4,10 @@ import CoinRow from "../components/table/CoinRow";
 import CoinCard from "../components/CoinCard";
 import { useCoinStore } from "@/store/coinStore";
 // import { useEffect, useRef } from "react";
-import Button from "@/components/atom/Button";
-import { Link } from "react-router";
+import { TableVirtuoso } from "react-virtuoso"
 
 const Dashboard = () => {
-  const { isLoading, currency } = useCoinQuery();
+  const { isLoading, currency, fetchNextPage, hasNextPage, isFetchingNextPage } = useCoinQuery();
   // const data = useCoinStore(state => state.coins);
   const data = useCoinStore(state => state.coinIds)
   const topData = data?.slice(0, 3);
@@ -31,7 +30,7 @@ const Dashboard = () => {
   // }, [isFetchingNextPage, hasNextPage, fetchNextPage])
 
   return (
-    <section className="space-y-14 overflow-hidden">
+    <section className="space-y-10 overflow-hidden">
       <div className="relative text-center">
         <div className="bg-radial-[at_top] from-primary/60 to-transparent absolute top-0 left-1/2 -translate-x-1/2 w-[80vw] h-[70vh] blur-[99px]" />
         <h1
@@ -61,17 +60,22 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="w-full space-y-6">
-        <div className="w-full flex justify-end">
-          <Button size="sm" className="w-fit" variant="primary">
-            <Link to='coins'>
-              Show More
-            </Link>
-          </Button>
-        </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
+      <div className="w-full h-[720px]">
+        <TableVirtuoso
+          data={data}
+          endReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          components={{
+            Table,
+            TableHead: TableHeader,
+            TableBody,
+            TableRow,
+          }}
+          fixedHeaderContent={() => (
+            <TableRow className="bg-black">
               <TableHead className="w-20">Index</TableHead>
               <TableHead>Coin</TableHead>
               <TableHead>Valuation</TableHead>
@@ -80,26 +84,15 @@ const Dashboard = () => {
                 Market Change (24h)
               </TableHead>
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {
-              data
-                ? data.map((coinId: string, index: number) => {
-                  return (
-                    <TableRow>
-                      <CoinRow
-                        key={coinId}
-                        coinId={coinId}
-                        index={index}
-                        currency={currency}
-                      />
-                    </TableRow>
-                  )
-                })
-                : <TableEmptyState isLoading={isLoading} colSpan={5} />
-            }
-          </TableBody>
-        </Table>
+          )}
+          itemContent={(index, coinId) => (
+            <CoinRow
+              coinId={coinId}
+              index={index}
+              currency={currency}
+            />
+          )}
+        />
       </div>
 
     </section>

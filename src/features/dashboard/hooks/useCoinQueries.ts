@@ -1,6 +1,6 @@
 import { useCurrency } from "@/context/CurrencyContext";
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getCoinPrices, getCoinsList, searchCoins } from "../services/coinsServices";
+import { getCoinsList, searchCoins } from "../services/coinsServices";
 import { useCoinStore } from "@/store/coinStore";
 
 export const useCoinQuery = () => {
@@ -27,11 +27,8 @@ export const useCoinQuery = () => {
       setCoins(data)
       return data;
     },
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length < 50
-        ? undefined
-        : allPages.length + 1
-
+    getNextPageParam: (_, allPages) => {
+      return allPages.length + 1;
     },
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,
@@ -50,22 +47,5 @@ export const useSearchCoin = (query: string) => {
     queryFn: () => searchCoins(query),
     enabled: query.trim().length > 0,
     staleTime: 5 * 60 * 1000,
-  })
-}
-
-export const useSimplePrice = (visibleCoinIds: string[]) => {
-  const { currency } = useCurrency();
-  const setCoins = useCoinStore(state => state.setCoins);
-
-  return useQuery({
-    queryKey: ['simple-price', visibleCoinIds.join(', '), currency],
-    queryFn: async () => {
-      const data = await getCoinPrices(visibleCoinIds, currency);
-      setCoins(data)
-      return data;
-    },
-    enabled: visibleCoinIds.length > 0,
-    refetchOnWindowFocus: false,
-    refetchInterval: 15000,
   })
 }
