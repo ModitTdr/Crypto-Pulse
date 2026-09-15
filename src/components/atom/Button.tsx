@@ -17,7 +17,7 @@ const Button = ({ children, className, variant = 'default', size = "md", loading
     default: "bg-foreground text-background ",
     outline: "bg-transparent text-foreground border border-subtle",
     ghost: "bg-transparent text-foreground border-0",
-    primary: "bg-primary/90 text-white border-0",
+    primary: "bg-primary/90 text-white border-0 hover:bg-primary",
     danger: "bg-warning text-foreground border-0",
   };
   const sizeStyle = {
