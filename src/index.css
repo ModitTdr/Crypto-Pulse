@@ -15,7 +15,7 @@
   --info: #3b82f6;
 
   --font-sora: "Sora", sans-serif;
-  --font-inter: "Inter", ui-sans-serif, system-ui;  
+  --font-inter: "Inter", ui-sans-serif, system-ui;
 }
 
 @theme {
@@ -47,6 +47,29 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px var(--background) inset !important;
-    -webkit-text-fill-color:var(--foreground) !important;
+  -webkit-box-shadow: 0 0 0 30px var(--background) inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #999;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #999 transparent;
 }

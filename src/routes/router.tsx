@@ -7,41 +7,48 @@ import PublicRoute from "./PublicRoute";
 import ProtectedRoute from "./PrivateRoute";
 import Dashboard from "@/features/dashboard/pages/Dashboard";
 import Portfolio from "@/features/dashboard/pages/Portfolio";
+import Coins from "@/features/dashboard/pages/Coins";
 
 const router = createBrowserRouter([
   {
-    element:
+    element: (
       <PublicRoute>
         <AuthLayout />
-      </PublicRoute>,
+      </PublicRoute>
+    ),
     children: [
       {
         path: "/login",
-        element: <LoginPage />
+        element: <LoginPage />,
       },
       {
         path: "/register",
-        element: <RegisterPage />
+        element: <RegisterPage />,
       },
-    ]
+    ],
   },
   {
-    path: "/dashboard",
-    element:
+    path: "/",
+    element: (
       <ProtectedRoute>
         <DashboardLayout />
-      </ProtectedRoute>,
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
-        element: <Dashboard />
+        element: <Dashboard />,
       },
       {
         path: "portfolio",
-        element: <Portfolio />
-      }
+        element: <Portfolio />,
+      },
+      {
+        path: "coins",
+        element: <Coins />,
+      },
     ],
-  }
-])
+  },
+]);
 
 export default router;

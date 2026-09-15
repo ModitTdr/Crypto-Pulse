@@ -1,4 +1,4 @@
-import { Activity, HomeIcon, LayoutDashboard, LogOut, X } from "lucide-react";
+import { Activity, Bitcoin, LayoutDashboard, LogOut, X } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router"
 import { logOut } from "@/features/authentication/services/authService";
 import Button from "../atom/Button";
@@ -12,9 +12,8 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const navLinks = [
-    { link: '/dashboard', label: 'Home', icon: HomeIcon },
     { link: '/dashboard/portfolio', label: 'Portfolio', icon: LayoutDashboard },
-    // { link: '/settings', label: 'Settings', icon: Settings },
+    { link: '/dashboard/coins', label: 'Coins', icon: Bitcoin },
   ];
 
   const handleLogout = async () => {
